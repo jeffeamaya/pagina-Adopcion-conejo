@@ -1,0 +1,319 @@
+/* styles.css - Adaptado para adopción de conejos */
+
+/* Estilos generales */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Header - Cambiado a verde natural */
+.header {
+    background: linear-gradient(135deg, #28a745, #218838) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.site-title {
+    font-family: 'Arial Black', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+/* Menú de navegación - Estilo más suave */
+.navbar {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    background-color: #343a40 !important;
+}
+
+.navbar.scrolled {
+    padding: 5px 0;
+    background-color: rgba(52, 58, 64, 0.95) !important;
+    backdrop-filter: blur(10px);
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    position: relative;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    color: #fff !important;
+}
+
+.nav-link.active {
+    background-color: rgba(40, 167, 69, 0.5) !important;
+    font-weight: bold;
+    color: #fff !important;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: #28a745;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 70%;
+}
+
+/* Contenido principal */
+.content {
+    min-height: calc(100vh - 200px);
+    padding: 30px 0;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    border-radius: 10px 10px 0 0 !important;
+    background-color: #28a745 !important;
+    color: white !important;
+}
+
+/* Botones - Estilo más natural */
+.btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+}
+
+.btn-primary, .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-primary:hover, .btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Galería de conejos - Estilo mejorado */
+.gallery-card {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.gallery-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-card img {
+    height: 250px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+    transition: transform 0.5s ease;
+}
+
+.gallery-card:hover img {
+    transform: scale(1.05);
+}
+
+.gallery-card .card-body {
+    padding: 15px;
+}
+
+.gallery-card .card-title {
+    color: #28a745;
+    font-weight: bold;
+}
+
+/* Formularios - Estilo amigable */
+.form-control {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
+}
+
+/* Footer - Estilo coherente */
+.footer {
+    background: linear-gradient(135deg, #343a40, #212529);
+    padding: 30px 0;
+    color: white;
+}
+
+.social-icons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    transition: all 0.3s ease;
+    margin: 0 5px;
+}
+
+.social-icons a:hover {
+    background-color: #28a745;
+    transform: translateY(-3px);
+    text-decoration: none;
+}
+
+/* Validación de formularios */
+.is-invalid {
+    border-color: #dc3545 !important;
+}
+
+.is-invalid:focus {
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+}
+
+.invalid-feedback {
+    display: none;
+    color: #dc3545;
+    font-size: 0.875em;
+}
+
+.is-invalid ~ .invalid-feedback {
+    display: block;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Efecto para tarjetas de valores */
+.value-card {
+    transition: all 0.3s ease;
+}
+
+.value-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.value-card i {
+    color: #28a745;
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .site-title {
+        font-size: 2rem;
+    }
+    
+    .nav-link {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .site-title {
+        font-size: 1.8rem;
+    }
+    
+    .navbar-collapse {
+        padding-top: 15px;
+    }
+    
+    .nav-link {
+        margin: 5px 0;
+    }
+    
+    .card {
+        margin-bottom: 15px;
+    }
+    
+    .gallery-card img {
+        height: 200px;
+    }
+}
+
+@media (max-width: 576px) {
+    .site-title {
+        font-size: 1.5rem;
+    }
+    
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .btn + .btn {
+        margin-left: 0 !important;
+    }
+    
+    .gallery-card img {
+        height: 180px;
+    }
+}
+
+/* Estilo especial para la página de cuidados */
+.care-tip {
+    background-color: #e8f5e9;
+    border-left: 4px solid #28a745;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 0 8px 8px 0;
+}
+
+.care-tip h5 {
+    color: #28a745;
+    margin-bottom: 10px;
+}
+
+/* Estilo para la sección de equipo */
+.team-card img {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin: 0 auto;
+    display: block;
+    border: 5px solid #28a745;
+}
+
+.team-card h5 {
+    color: #28a745;
+    margin-top: 15px;
+}
