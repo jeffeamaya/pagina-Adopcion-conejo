@@ -9,20 +9,21 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <div class="container-fluid p-0">
-        <header class="header bg-success text-white py-3 py-md-4">
-            <div class="container">
-                <div class="d-flex align-items-center justify-content-between">
-                    <img src="img/logo2.png" alt="Logo" class="logo-img me-2 me-md-3">
-                    <div class="text-center mx-auto mx-md-0">
-                        <h1 class="site-title mb-0">Conejos para Adopción</h1>
+
+        <div class="container-fluid p-0">
+            <header class="header bg-success text-white py-4">
+                <div class="container d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <img src="img/logo2.png" alt="Logo" class="logo-img me-3"> <div class="text-center"> <h1 class="site-title">Conejos para Adopción</h1>
+                        <p class="site-subtitle">Tu nuevo compañero te espera</p> </div>
                     </div>
+                    
                     <button id="darkModeToggle" class="btn btn-sm btn-outline-light py-1 px-2">
                         <i class="fas fa-moon"></i> <span class="d-none d-sm-inline">Modo Oscuro</span>
-                    </button>
+                    </button> 
                 </div>
-            </div>
-        </header>
+            </header>
+        </div>
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
@@ -249,7 +250,7 @@
             </div>
         </main>
 
-        <footer class="footer bg-dark text-white py-4">
+        <footer class="footer bg-dark  py-4">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6">
@@ -273,217 +274,271 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/darkmode.js"></script>
-    <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('registroForm');
-    const btnRegistrar = document.getElementById('btnRegistrar');
-    
-    // Validación en tiempo real para teléfono (solo números)
-    const telefonoInput = document.getElementById('telefono');
-    if(telefonoInput) {
-        telefonoInput.addEventListener('input', function() {
-            this.value = this.value.replace(/[^0-9]/g, '');
-        });
-    }
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
-    // Función para validar un campo específico
-    function validarCampo(campo) {
-        let input, value, isValid = true;
-        
-        if (campo.id) {
-            input = document.getElementById(campo.id);
-            value = input.value;
-        } else if (campo.name) {
-            input = document.querySelector(`input[name="${campo.name}"]:checked`);
-            value = input ? input.value : null;
-        }
-        
-        if (typeof campo.validacion === 'function') {
-            if (campo.id === 'terminos') {
-                isValid = campo.validacion(document.getElementById(campo.id));
-            } else {
-                isValid = campo.validacion(value);
-            }
-        }
-        
-        if (!isValid) {
-            input.classList.add('is-invalid');
-            if (campo.mensaje) {
-                const error = document.getElementById(campo.mensaje);
-                error.textContent = campo.errorMsg;
-                error.style.display = 'block';
-            }
-            return false;
+<script>
+    (function(){
+        // Asegúrate de que la librería emailjs esté cargada antes de inicializarla.
+        if (typeof emailjs !== 'undefined') {
+            emailjs.init({
+                publicKey: "f_IPViWkQ2G9klAgh",
+            });
         } else {
-            if (campo.id || campo.name) {
-                input.classList.remove('is-invalid');
-                if (campo.mensaje) {
-                    const error = document.getElementById(campo.mensaje);
-                    if (error) error.style.display = 'none';
+            console.error("La librería EmailJS no está cargada. Asegúrate de incluir email.min.js antes de este script.");
+        }
+    })();
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('registroForm');
+        const btnRegistrar = document.getElementById('btnRegistrar');
+        
+        // Validación al hacer clic en "Enviar Solicitud"
+        btnRegistrar.addEventListener('click', function(event) {
+            event.preventDefault();
+            
+            const campos = [
+                { 
+                    id: 'nombre', 
+                    mensaje: 'nombre-error', // ID del elemento donde se mostrará el error
+                    validacion: (value) => /^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{3,}$/.test(value.trim()),
+                    errorMsg: 'Por favor, ingresa un nombre válido (mínimo 3 caracteres).'
+                },
+                { 
+                    id: 'email', 
+                    mensaje: 'email-error',
+                    validacion: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim()),
+                    errorMsg: 'Por favor, ingresa un correo electrónico válido.'
+                },
+                { 
+                    id: 'telefono', 
+                    mensaje: 'telefono-error',
+                    validacion: (value) => /^[0-9]{8,15}$/.test(value.trim()),
+                    errorMsg: 'Por favor, ingresa un número de teléfono válido (8-15 dígitos).'
+                },
+                { 
+                    id: 'edad', 
+                    mensaje: 'edad-error', // Añadido ID de mensaje para consistencia
+                    validacion: (value) => value >= 18,
+                    errorMsg: 'Debes ser mayor de 18 años para adoptar.'
+                },
+                { 
+                    id: 'vivienda', 
+                    mensaje: 'vivienda-error',
+                    validacion: (value) => value !== '',
+                    errorMsg: 'Por favor, selecciona tu tipo de vivienda.'
+                },
+                { 
+                    id: 'espacio', 
+                    mensaje: 'espacio-error', // Añadido ID de mensaje para consistencia
+                    validacion: (value) => value !== '',
+                    errorMsg: 'Por favor, selecciona dónde vivirá el conejo.'
+                },
+                { 
+                    name: 'otros_animales',
+                    mensaje: 'otros-animales-error', // Añadido ID de mensaje para botones de radio
+                    validacion: () => document.querySelector('input[name="otros_animales"]:checked') !== null,
+                    errorMsg: 'Por favor, indica si tienes otros animales.'
+                },
+                { 
+                    id: 'experiencia', 
+                    mensaje: 'experiencia-error',
+                    validacion: (value) => value !== '',
+                    errorMsg: 'Por favor, selecciona tu nivel de experiencia.'
+                },
+                { 
+                    id: 'tiempo', 
+                    mensaje: 'tiempo-error', // Añadido ID de mensaje para consistencia
+                    validacion: (value) => value !== '',
+                    errorMsg: 'Por favor, selecciona tu disponibilidad de tiempo.'
+                },
+                { 
+                    id: 'motivacion', 
+                    mensaje: 'motivacion-error', // Añadido ID de mensaje para consistencia
+                    validacion: (value) => value.trim().length > 10,
+                    errorMsg: 'Por favor, comparte tu motivación para adoptar (mínimo 10 caracteres).'
+                },
+                { 
+                    id: 'terminos', 
+                    mensaje: 'terminos-error', // Añadido ID de mensaje para consistencia
+                    validacion: (el) => el.checked,
+                    errorMsg: 'Debes aceptar los términos para continuar.'
                 }
+            ];
+            
+            let valido = true;
+            let firstInvalid = null;
+            
+            campos.forEach(campo => {
+                let input;
+                let value;
+                let errorElement; 
+
+                if (campo.id) {
+                    input = document.getElementById(campo.id);
+                    value = input ? input.value : ''; // Asegurarse de que 'input' exista
+                    errorElement = document.getElementById(campo.mensaje);
+                } else if (campo.name) {
+                    input = document.querySelector(`input[name="${campo.name}"]`);
+                    // Para botones de radio, necesitamos el valor del que está seleccionado
+                    if (input && input.type === 'radio') {
+                         const checkedRadio = document.querySelector(`input[name="${campo.name}"]:checked`);
+                         value = checkedRadio ? checkedRadio.value : '';
+                    } else {
+                         value = input ? input.value : null;
+                    }
+                    errorElement = document.getElementById(campo.mensaje);
+                }
+                
+                const errorMsg = campo.errorMsg;
+                let isValid = false;
+                
+                if (typeof campo.validacion === 'function') {
+                    if (campo.id === 'terminos') {
+                        isValid = campo.validacion(input); // Pasa el elemento input directamente para checkboxes
+                    } else if (campo.name && input && input.type === 'radio') {
+                        isValid = campo.validacion(); // Llama a la validación para botones de radio sin argumento de valor
+                    } else {
+                        isValid = campo.validacion(value);
+                    }
+                }
+                
+                if (!isValid) {
+                    valido = false;
+                    if (input) { 
+                        input.classList.add('is-invalid');
+                        if (errorElement) {
+                            errorElement.textContent = errorMsg;
+                            errorElement.style.display = 'block';
+                        } else {
+                            // Fallback para elementos sin un ID de mensaje específico, usando 'invalid-feedback'
+                            const feedback = input.nextElementSibling;
+                            if (feedback && feedback.classList.contains('invalid-feedback')) {
+                                feedback.textContent = errorMsg;
+                                feedback.style.display = 'block';
+                            }
+                        }
+                    }
+                    
+                    if (!firstInvalid) {
+                        firstInvalid = input;
+                    }
+                } else {
+                    if (input) {
+                        input.classList.remove('is-invalid');
+                        if (errorElement) {
+                            errorElement.style.display = 'none';
+                        } else {
+                            const feedback = input.nextElementSibling;
+                            if (feedback && feedback.classList.contains('invalid-feedback')) {
+                                feedback.style.display = 'none';
+                            }
+                        }
+                    }
+                }
+            });
+            
+            if (firstInvalid) {
+                firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                firstInvalid.focus();
             }
-            return true;
-        }
-    }
+            
+            if (valido) {
+                // Mostrar mensaje de envío
+                btnRegistrar.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Enviando...';
+                btnRegistrar.disabled = true;
 
-    // Configuración de campos a validar
-    const campos = [
-        { 
-            id: 'nombre', 
-            mensaje: 'nombre-error',
-            validacion: (value) => value && /^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{3,}$/.test(value.trim()),
-            errorMsg: 'Por favor ingrese un nombre válido (mínimo 3 caracteres)'
-        },
-        { 
-            id: 'email', 
-            mensaje: 'email-error',
-            validacion: (value) => value && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim()),
-            errorMsg: 'Por favor ingrese un correo electrónico válido'
-        },
-        { 
-            id: 'telefono', 
-            mensaje: 'telefono-error',
-            validacion: (value) => value && /^[0-9]{8,15}$/.test(value.trim()),
-            errorMsg: 'Por favor ingrese un número de teléfono válido (8-15 dígitos)'
-        },
-        { 
-            id: 'edad', 
-            validacion: (value) => value && value >= 18 && value <= 99,
-            errorMsg: 'Debes ser mayor de 18 años para adoptar'
-        },
-        { 
-            id: 'vivienda', 
-            mensaje: 'vivienda-error',
-            validacion: (value) => value && value !== '',
-            errorMsg: 'Por favor seleccione su tipo de vivienda'
-        },
-        { 
-            id: 'espacio', 
-            validacion: (value) => value && value !== '',
-            errorMsg: 'Por favor seleccione dónde vivirá el conejo'
-        },
-        { 
-            name: 'otros_animales',
-            validacion: () => document.querySelector('input[name="otros_animales"]:checked') !== null,
-            errorMsg: 'Por favor indique si tiene otros animales'
-        },
-        { 
-            id: 'experiencia', 
-            mensaje: 'experiencia-error',
-            validacion: (value) => value && value !== '',
-            errorMsg: 'Por favor seleccione su nivel de experiencia'
-        },
-        { 
-            id: 'tiempo', 
-            validacion: (value) => value && value !== '',
-            errorMsg: 'Por favor seleccione su disponibilidad de tiempo'
-        },
-        { 
-            id: 'motivacion', 
-            validacion: (value) => value && value.trim().length > 10,
-            errorMsg: 'Por favor comparte tu motivación para adoptar (mínimo 10 caracteres)'
-        },
-        { 
-            id: 'terminos', 
-            validacion: (el) => el.checked,
-            errorMsg: 'Debes aceptar los términos para continuar'
-        }
-    ];
+                const templateParams = {
+                    nombre: document.getElementById('nombre').value,
+                    telefono: document.getElementById('telefono').value,
+                    experiencia: document.getElementById('experiencia').value               
+                };
 
-    // Validar al enviar el formulario
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        
-        let valido = true;
-        let firstInvalid = null;
-        
-        // Validar todos los campos
-        campos.forEach(campo => {
-            const campoValido = validarCampo(campo);
-            if (!campoValido && valido) {
-                valido = false;
-                firstInvalid = document.getElementById(campo.id) || 
-                              document.querySelector(`input[name="${campo.name}"]`);
+                // Envía el correo usando EmailJS
+                window.emailjs.send('service_dke73fc', 'template_hox8lr8', templateParams) 
+                .then(function(response) {
+                    console.log('¡ÉXITO!', response.status, response.text);
+                    
+                    // Crea y muestra el modal de éxito
+                    const modalHTML = `
+                        <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-success text-white">
+                                        <h5 class="modal-title"><i class="fas fa-check-circle me-2"></i> Solicitud Enviada</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center py-4">
+                                        <i class="fas fa-check-circle text-success fa-5x mb-4"></i>
+                                        <h4 class="mb-3">¡Gracias por tu interés en adoptar!</h4>
+                                        <p>Hemos recibido tu solicitud correctamente. Nos pondremos en contacto contigo en un plazo de 48 horas.</p>
+                                        <p>Mientras tanto, te invitamos a conocer más sobre <a href="cuidados.html">el cuidado de los conejos</a>.</p>
+                                    </div>
+                                    <div class="modal-footer justify-content-center">
+                                        <button type="button" class="btn btn-acento" data-bs-dismiss="modal">Entendido</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.body.insertAdjacentHTML('beforeend', modalHTML);
+                    const modalElement = document.getElementById('successModal');
+                    const successModal = new bootstrap.Modal(modalElement); 
+                    
+                    modalElement.addEventListener('hidden.bs.modal', () => {
+                        modalElement.remove(); // Elimina el modal del DOM después de ocultarse
+                        form.reset(); // Reinicia el formulario
+                        // Reinicia los estilos de los inputs y los mensajes de error
+                        campos.forEach(campo => {
+                            let inputElement;
+                            if (campo.id) {
+                                inputElement = document.getElementById(campo.id);
+                            } else if (campo.name) {
+                                inputElement = document.querySelector(`input[name="${campo.name}"]`);
+                            }
+
+                            if (inputElement) {
+                                inputElement.classList.remove('is-invalid');
+                                const errorSpan = document.getElementById(campo.mensaje);
+                                if (errorSpan) {
+                                    errorSpan.style.display = 'none';
+                                    errorSpan.textContent = '';
+                                }
+                                const feedback = inputElement.nextElementSibling;
+                                if (feedback && feedback.classList.contains('invalid-feedback')) {
+                                    feedback.style.display = 'none';
+                                    feedback.textContent = '';
+                                }
+                            }
+                        });
+
+                        btnRegistrar.innerHTML = '<i class="fas fa-paper-plane me-2"></i> Enviar Solicitud';
+                        btnRegistrar.disabled = false;
+                    });
+                    
+                    successModal.show();
+
+                }, function(error) {
+                    console.error('FALLÓ...', error);
+                    alert('Hubo un error al enviar la solicitud. Por favor, inténtalo de nuevo.');
+                    
+                    // Reactivar el botón si hay un error
+                    btnRegistrar.innerHTML = '<i class="fas fa-paper-plane me-2"></i> Enviar Solicitud';
+                    btnRegistrar.disabled = false;
+                });
             }
         });
         
-        if (!valido && firstInvalid) {
-            firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            firstInvalid.focus();
-            return;
-        }
-        
-        // Si todo es válido, proceder con el envío
-        if (valido) {
-            enviarFormulario();
+        // Validación en tiempo real para el campo de teléfono (solo números)
+        const telefonoInput = document.getElementById('telefono');
+        if (telefonoInput) { 
+            telefonoInput.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
         }
     });
-    
-    // Función para enviar el formulario
-    function enviarFormulario() {
-        // Mostrar estado de carga
-        btnRegistrar.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Enviando...';
-        btnRegistrar.disabled = true;
-        
-        // Simular envío al servidor (en un caso real sería una llamada fetch/AJAX)
-        setTimeout(() => {
-            mostrarModalExito();
-        }, 1500);
-    }
-    
-    // Función para mostrar modal de éxito
-    function mostrarModalExito() {
-        const modalHTML = `
-            <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header bg-success text-white">
-                            <h5 class="modal-title"><i class="fas fa-check-circle me-2"></i> Solicitud Enviada</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body text-center py-4">
-                            <i class="fas fa-check-circle text-success fa-5x mb-4"></i>
-                            <h4 class="mb-3">¡Gracias por tu interés en adoptar!</h4>
-                            <p>Hemos recibido tu solicitud correctamente. Nos pondremos en contacto contigo en un plazo de 48 horas.</p>
-                            <p>Mientras tanto, te invitamos a conocer más sobre <a href="cuidados.html">el cuidado de los conejos</a>.</p>
-                        </div>
-                        <div class="modal-footer justify-content-center">
-                            <button type="button" class="btn btn-acento" data-bs-dismiss="modal">Entendido</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        document.body.insertAdjacentHTML('beforeend', modalHTML);
-        const modalElement = document.getElementById('successModal');
-        const modal = new bootstrap.Modal(modalElement);
-        
-        modalElement.addEventListener('hidden.bs.modal', () => {
-            modalElement.remove();
-            resetearFormulario();
-        });
-        
-        modal.show();
-    }
-    
-    // Función para resetear el formulario
-    function resetearFormulario() {
-        form.reset();
-        btnRegistrar.innerHTML = '<i class="fas fa-paper-plane me-2"></i> Enviar Solicitud';
-        btnRegistrar.disabled = false;
-        
-        // Limpiar clases de validación
-        document.querySelectorAll('.is-invalid').forEach(el => {
-            el.classList.remove('is-invalid');
-        });
-        document.querySelectorAll('.invalid-feedback').forEach(el => {
-            el.style.display = 'none';
-        });
-    }
-});
 </script>
+<script src="js/darkmode.js"></script>
+
 </body>
 </html>

@@ -579,18 +579,18 @@ a:hover {
 
 /* Modo oscuro */
 [data-theme="dark"] {
-  --color-dominante: #1a3a2e;
+  --color-dominante: #3e9e5b;
   --color-secundario: #000000;
   --color-acento: #e74c3c;
   --color-texto: #f0f0f0;
-  --color-blanco: #121212;
+  --color-blanco: #f1e7e7;
   --color-negro: #f0f0f0;
   --color-sombra: rgba(0, 0, 0, 0.3);
   --color-borde: rgba(255, 255, 255, 0.1);
 }
 
 [data-theme="dark"] body {
-  background-color: var(--color-blanco);
+  background-color: black;
   color: var(--color-texto);
 }
 
@@ -600,7 +600,6 @@ a:hover {
   background-color: var(--color-secundario) !important;
   color: var(--color-texto);
 }
-
 [data-theme="dark"] .card {
   background-color: var(--color-dominante);
   border-color: var(--color-borde);
@@ -619,7 +618,7 @@ a:hover {
 
 [data-theme="dark"] .form-control {
   background-color: var(--color-blanco);
-  color: var(--color-texto);
+  color: black;
   border-color: var(--color-borde);
 }
 
@@ -630,7 +629,16 @@ a:hover {
 }
 
 [data-theme="dark"] .features-section {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: black;
+}
+
+[data-theme="dark"] .features-section h2 {
+  color: white;
+}
+
+[data-theme="dark"] .modal-body 
+{
+  color: #000000;
 }
 
 /* Transiciones suaves */
